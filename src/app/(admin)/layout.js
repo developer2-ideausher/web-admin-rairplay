@@ -11,12 +11,12 @@ const layout = ({ children }) => {
             <Sidebar />
           </div>
 
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col  h-screen overflow-hidden">
             <div className="sticky top-0 z-50 w-full   ">
               <Header />
             </div>
 
-            <div className="p-14 overflow-y-auto flex-1 bg-secondary">
+            <div className="px-24 py-10 overflow-y-auto flex-1 bg-secondary">
               {children}
             </div>
           </div>
