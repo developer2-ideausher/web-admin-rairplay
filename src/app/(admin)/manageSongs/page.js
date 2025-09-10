@@ -1,4 +1,7 @@
 "use client";
+import Albums from "@/Components/ManageSongsComponents/Albums";
+import Channels from "@/Components/ManageSongsComponents/Channels";
+import SingleTracks from "@/Components/ManageSongsComponents/SingleTracks";
 import Title from "@/Components/Title";
 import { Search } from "lucide-react";
 import React, { useState } from "react";
@@ -42,14 +45,18 @@ const page = () => {
       </div>
       <div className="flex justify-end w-full">
         <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
-          <Search />
+          <Search color="white" />
           <input
-            className="w-full focus:outline-none "
+            className="w-full focus:outline-none text-white"
             type="text"
             placeholder={active}
           />
         </div>
       </div>
+      {active==="tracks" && <SingleTracks />}
+      {active==="albums" && <Albums />}
+      {active==="channels" && <Channels />}
+
     </div>
   );
 };

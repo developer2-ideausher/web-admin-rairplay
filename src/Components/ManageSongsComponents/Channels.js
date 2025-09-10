@@ -14,7 +14,7 @@ import {
 import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
 // import Pagination from "../Pagination";
 
-export default function SingleTracks() {
+export default function Channels() {
   const [data] = useState([
     {
       _id: "trk_001",
@@ -62,7 +62,7 @@ export default function SingleTracks() {
   const COLUMNS = useMemo(
     () => [
       {
-        header: "Tracks",
+        header: "Channel",
         accessorKey: "_id",
         cell: (info) => (
           <span className="text-sm font-medium nuni text-black">
@@ -70,62 +70,18 @@ export default function SingleTracks() {
           </span>
         ),
       },
+     
+     
+     
       {
-        header: "Visibility",
-        accessorKey: "title",
-        cell: (info) => {
-          const value = info.getValue();
-          return (
-            <p
-              title={value ?? ""}
-              className="text-sm font-medium nuni truncate max-w-xs text-black"
-            >
-              {value ?? "--"}
-            </p>
-          );
-        },
-      },
-      {
-        header: "Enabled",
-        accessorKey: "description",
-        cell: (info) => {
-          const value = info.getValue();
-          return (
-            <p
-              title={value ?? ""}
-              className="text-sm font-medium nuni truncate max-w-xs text-black"
-            >
-              {value ?? "--"}
-            </p>
-          );
-        },
-      },
-      {
-        header: "Likes",
-        accessorKey: "likes",
+        header: "Genre",
+        accessorKey: "count",
       },
       {
         header: "Listens",
         accessorKey: "listens",
       },
-      {
-        header: "Creation Date",
-        accessorKey: "createdAt",
-        cell: (info) => {
-          const value = info.getValue();
-          return (
-            <p
-              title={value ?? ""}
-              className="text-sm font-medium nuni truncate max-w-sm text-black"
-            >
-              {value === null
-                ? "--"
-                : dayjs(value).format("DD/MM/YYYY , h:mm a")}
-            </p>
-          );
-        },
-      },
-      {
+        {
         header: "", 
         id: "actions",
         enableSorting: false,
@@ -151,6 +107,7 @@ export default function SingleTracks() {
           </DropdownMenu>
         ),
       },
+      
     ],
     []
   );
@@ -161,7 +118,7 @@ export default function SingleTracks() {
   return (
     <div className=" rounded-lg flex flex-col">
       <div className="flex flex-row pb-1 gap-3 items-center rounded-lg ">
-        <p className="text-xl font-semibold nuni text-txtgray">Single Tracks</p>
+        <p className="text-xl font-semibold nuni text-txtgray">Channels</p>
       </div>
       <DataTable columns={columns} data={data} loading={loading} />
     </div>

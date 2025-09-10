@@ -14,7 +14,7 @@ import {
 import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
 // import Pagination from "../Pagination";
 
-export default function SingleTracks() {
+export default function UsersTable() {
   const [data] = useState([
     {
       _id: "trk_001",
@@ -62,7 +62,7 @@ export default function SingleTracks() {
   const COLUMNS = useMemo(
     () => [
       {
-        header: "Tracks",
+        header: "Users",
         accessorKey: "_id",
         cell: (info) => (
           <span className="text-sm font-medium nuni text-black">
@@ -71,7 +71,7 @@ export default function SingleTracks() {
         ),
       },
       {
-        header: "Visibility",
+        header: "Blocked",
         accessorKey: "title",
         cell: (info) => {
           const value = info.getValue();
@@ -86,7 +86,7 @@ export default function SingleTracks() {
         },
       },
       {
-        header: "Enabled",
+        header: "Location",
         accessorKey: "description",
         cell: (info) => {
           const value = info.getValue();
@@ -101,30 +101,22 @@ export default function SingleTracks() {
         },
       },
       {
-        header: "Likes",
+        header: "Genre",
+        accessorKey: "genre",
+      },
+      {
+        header: "plan",
         accessorKey: "likes",
       },
       {
-        header: "Listens",
-        accessorKey: "listens",
+        header: "contact",
+        accessorKey: "contact",
       },
       {
-        header: "Creation Date",
-        accessorKey: "createdAt",
-        cell: (info) => {
-          const value = info.getValue();
-          return (
-            <p
-              title={value ?? ""}
-              className="text-sm font-medium nuni truncate max-w-sm text-black"
-            >
-              {value === null
-                ? "--"
-                : dayjs(value).format("DD/MM/YYYY , h:mm a")}
-            </p>
-          );
-        },
+        header: "following",
+        accessorKey: "following",
       },
+     
       {
         header: "", 
         id: "actions",
@@ -161,7 +153,7 @@ export default function SingleTracks() {
   return (
     <div className=" rounded-lg flex flex-col">
       <div className="flex flex-row pb-1 gap-3 items-center rounded-lg ">
-        <p className="text-xl font-semibold nuni text-txtgray">Single Tracks</p>
+        <p className="text-xl font-semibold nuni text-txtgray">Users</p>
       </div>
       <DataTable columns={columns} data={data} loading={loading} />
     </div>

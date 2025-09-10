@@ -1,5 +1,6 @@
 "use client";
 import {
+  BellRing,
   House,
   ListMusic,
   ListVideo,
@@ -15,6 +16,7 @@ const navItems = [
   { label: "Create Channel", icon: ListVideo, path: "/channel" },
   { label: "Manage Songs", icon: ListMusic, path: "/manageSongs" },
   { label: "Manage Users", icon: Users, path: "/manageUsers" },
+  { label: "Notifications", icon: BellRing , path: "/notifications" },
   { label: "Advertisements", icon: Megaphone, path: "/advertisements" },
   { label: "Logout", icon: LogOut, path: "/logout" },
 ];
