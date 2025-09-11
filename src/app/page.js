@@ -5,7 +5,7 @@ import React from 'react'
 const Page = () => {
   const router=useRouter()
   return (
-    <button onClick={()=>router.push("/dashBoard")} className='flex justify-center items-center w-full h-screen'>Go to dashboard</button>
+    <button onClick={()=>router.push("/dashBoard")} className='flex justify-center items-center w-full h-screen bg-black text-white'>Go to dashboard</button>
   )
 }
 

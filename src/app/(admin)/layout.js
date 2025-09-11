@@ -4,7 +4,7 @@ import React from "react";
 
 const layout = ({ children }) => {
   return (
-    <div className="min-w-full  ">
+    <div className="min-w-full bg-black ">
       <div className="max-w-[1920px] max-h-auto w-full mx-auto flex flex-wrap items-start bg-gray-800">
         <div className=" w-full flex flex-row justify-center">
           <div className="w-68 bg-primary overflow-y-hidden h-screen overflow-hidden sticky top-0">

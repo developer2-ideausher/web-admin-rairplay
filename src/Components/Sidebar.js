@@ -16,7 +16,7 @@ const navItems = [
   { label: "Create Channel", icon: ListVideo, path: "/channel" },
   { label: "Manage Songs", icon: ListMusic, path: "/manageSongs" },
   { label: "Manage Users", icon: Users, path: "/manageUsers" },
-  { label: "Notifications", icon: BellRing , path: "/notifications" },
+  { label: "Notifications", icon: BellRing, path: "/notifications" },
   { label: "Advertisements", icon: Megaphone, path: "/advertisements" },
   { label: "Logout", icon: LogOut, path: "/logout" },
 ];
@@ -30,9 +30,13 @@ const Sidebar = () => {
       {/* Logo */}
       <div className="flex flex-row gap-1.5 w-full ml-1.5">
         <img src="/logo192.png" alt="logo" className="w-10 h-10" />
-        <p className="text-txtgray inter text-2xl font-bold hover:text-white">
+        <button
+          onClick={() => router.push("/dashBoard")}
+          className="text-txtgray inter text-2xl font-bold hover:text-white cursor-pointer transform transition-all duration-300 ease-in-out 
+                    hover:scale-105 hover:shadow-2xl hover:bg-primary/90 "
+        >
           Rairplay
-        </p>
+        </button>
       </div>
 
       {/* Nav Items */}
@@ -46,7 +50,8 @@ const Sidebar = () => {
             <div
               key={label}
               onClick={() => path && router.push(path)}
-              className="flex flex-row gap-3 items-center group cursor-pointer"
+              className="flex flex-row gap-3 items-center group cursor-pointer transform transition-all duration-300 ease-in-out 
+                    hover:scale-105 hover:shadow-2xl hover:bg-primary/90 "
             >
               <Icon
                 className={`${
