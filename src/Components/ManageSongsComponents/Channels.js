@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import DataTable from "../DataTable";
 // import Modal from "../Modal";
@@ -11,54 +11,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
+import {
+  CircleMinus,
+  EllipsisVertical,
+  Eye,
+  Search,
+  Trash2,
+} from "lucide-react";
+import { getAllChannels } from "../../../Api/ManageSongs/page";
 // import Pagination from "../Pagination";
 
 export default function Channels() {
-  const [data] = useState([
-    {
-      _id: "trk_001",
-      title: "Neon Skyline",
-      description: "Smooth synthwave with late-night vibes",
-      likes: 124,
-      listens: 5210,
-      createdAt: "2025-08-16T14:05:00.000Z",
-    },
-    {
-      _id: "trk_002",
-      title: "Coffee & Code",
-      description: "Lo-fi beats to debug to",
-      likes: 89,
-      listens: 3412,
-      createdAt: "2025-07-29T09:30:00.000Z",
-    },
-    {
-      _id: "trk_003",
-      title: "Desert Sun",
-      description: "Ambient guitars and warm pads",
-      likes: 203,
-      listens: 9820,
-      createdAt: "2025-06-03T18:45:00.000Z",
-    },
-    {
-      _id: "trk_004",
-      title: null,
-      description: "Untitled idea sketch",
-      likes: 2,
-      listens: 34,
-      createdAt: null,
-    },
-    {
-      _id: "trk_005",
-      title: "Midnight Runner",
-      description: null,
-      likes: 57,
-      listens: 1900,
-      createdAt: "2025-05-12T22:10:00.000Z",
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllChannels();
+      if (response.data) {
+        setData(response.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.message || "Unable to fetch channels");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const [loading] = useState(false);
   const COLUMNS = useMemo(
     () => [
       {
@@ -70,19 +53,76 @@ export default function Channels() {
           </span>
         ),
       },
-     
-     
-     
+
+      {
+        header: "title",
+        accessorKey: "title",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p
+              title={value ?? ""}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {value ?? "--"}
+            </p>
+          );
+        },
+      },
       {
         header: "Genre",
-        accessorKey: "count",
+        accessorKey: "genres",
+        cell: (info) => {
+          const value = info.getValue();
+          const genreNames = Array.isArray(value)
+            ? value.map((item) => item.name)
+            : [];
+
+          return (
+            <p
+              title={genreNames.join(", ")}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {genreNames.length > 0 ? genreNames.join(", ") : "--"}
+            </p>
+          );
+        },
       },
+
       {
         header: "Listens",
-        accessorKey: "listens",
+        accessorKey: "listen",
       },
-        {
-        header: "", 
+      {
+        header: "created At",
+        accessorKey: "createdAt",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p className="text-sm font-medium nuni truncate max-w-sm text-black">
+              {value === null
+                ? "--"
+                : dayjs(value).format("DD/MM/YYYY , h:mm a")}
+            </p>
+          );
+        },
+      },
+      {
+        header: "updated At",
+        accessorKey: "updatedAt",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p className="text-sm font-medium nuni truncate max-w-sm text-black">
+              {value === null
+                ? "--"
+                : dayjs(value).format("DD/MM/YYYY , h:mm a")}
+            </p>
+          );
+        },
+      },
+      {
+        header: "",
         id: "actions",
         enableSorting: false,
         enableColumnFilter: false,
@@ -93,21 +133,23 @@ export default function Channels() {
                 <EllipsisVertical className="h-5 w-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 shadow-lg border border-black bg-[#23252B] text-white" align="end">
+            <DropdownMenuContent
+              className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
+              align="end"
+            >
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <Eye /> View 
+                <Eye /> View
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <CircleMinus /> Inactive 
+                <CircleMinus /> Inactive
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
-                <Trash2 color="red" /> Delete 
+                <Trash2 color="red" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ),
       },
-      
     ],
     []
   );
@@ -117,6 +159,16 @@ export default function Channels() {
   const columns = useMemo(() => COLUMNS, []);
   return (
     <div className=" rounded-lg flex flex-col">
+      <div className="flex justify-end w-full my-4">
+        <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
+          <Search color="white" />
+          <input
+            className="w-full focus:outline-none text-white"
+            type="text"
+            placeholder="Channel name"
+          />
+        </div>
+      </div>
       <div className="flex flex-row pb-1 gap-3 items-center rounded-lg ">
         <p className="text-xl font-semibold nuni text-txtgray">Channels</p>
       </div>

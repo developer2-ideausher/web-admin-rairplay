@@ -43,7 +43,7 @@ const page = () => {
           Channels
         </button>
       </div>
-      <div className="flex justify-end w-full">
+      {/* <div className="flex justify-end w-full">
         <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
           <Search color="white" />
           <input
@@ -52,7 +52,7 @@ const page = () => {
             placeholder={active}
           />
         </div>
-      </div>
+      </div> */}
       {active==="tracks" && <SingleTracks />}
       {active==="albums" && <Albums />}
       {active==="channels" && <Channels />}

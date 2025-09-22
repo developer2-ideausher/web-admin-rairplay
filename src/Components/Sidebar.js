@@ -2,6 +2,7 @@
 import {
   BellRing,
   House,
+  Languages,
   ListMusic,
   ListVideo,
   LogOut,
@@ -14,6 +15,8 @@ import React from "react";
 const navItems = [
   { label: "Home", icon: House, path: "/dashBoard" },
   { label: "Create Channel", icon: ListVideo, path: "/channel" },
+  { label: "Language & Genre", icon: Languages, path: "/language&Genre" },
+
   { label: "Manage Songs", icon: ListMusic, path: "/manageSongs" },
   { label: "Manage Users", icon: Users, path: "/manageUsers" },
   { label: "Notifications", icon: BellRing, path: "/notifications" },

@@ -11,53 +11,36 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import {
-  CircleMinus,
-  EllipsisVertical,
-  Eye,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { CircleMinus, EllipsisVertical, Eye, Search, Trash2 } from "lucide-react";
+import { getAllGenres, getAllLanguages } from "../../../Api/Lang&Genre/page";
 import { toast } from "react-toastify";
-import { getAllAblums } from "../../../Api/ManageSongs/page";
+// import Pagination from "../Pagination";
 
-export default function Albums() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await getAllAblums();
-      if (response.data) {
-        setData(response.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      toast.error(error.message || "Unable to fetch albums");
-    } finally {
+export default function GenTable() {
+const [data,setData] = useState([]);
+const [loading,setLoading] = useState(false);
+const fetchData = async () => {
+  try {
+    setLoading(true);
+    const response = await getAllGenres();
+    if (response.data) {
+      setData(response.data);
       setLoading(false);
     }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  } catch (error) {
+    toast.error(error.message || "Unable to fetch languages");
+  } finally {
+    setLoading(false);
+  }
+};
+useEffect(() => {
+  fetchData();
+}, []);
 
   const COLUMNS = useMemo(
     () => [
       {
-        header: "ID",
-        accessorKey: "_id",
-        cell: (info) => (
-          <p
-            title={info.getValue()}
-            className="text-sm font-medium nuni max-w-xs truncate text-black"
-          >
-            {info.getValue()}
-          </p>
-        ),
-      },
-      {
-        header: "Album",
+        header: "name",
         accessorKey: "name",
         cell: (info) => (
           <span className="text-sm font-medium nuni text-black">
@@ -66,50 +49,41 @@ export default function Albums() {
         ),
       },
       {
-        header: "Artist",
-        accessorKey: "artist",
+        header: "description",
+        accessorKey: "description",
         cell: (info) => {
           const value = info.getValue();
           return (
             <p
-              title={value?.username ?? ""}
+              title={value ?? ""}
               className="text-sm font-medium nuni truncate max-w-xs text-black"
             >
-              {value?.username ?? "--"}
+              {value ?? "--"}
             </p>
           );
         },
       },
+     
+    
       {
-        header: "Visibility",
-        accessorKey: "isPublic",
-        cell: (info) => {
-          const value = info.getValue();
-          return (
-            <p className="text-sm font-medium nuni truncate max-w-xs text-black">
-              {value ? "Public" : "Private"}
-            </p>
-          );
-        },
-      },
-
-      {
-        header: "Tracks Count",
-        accessorKey: "songs",
+        header: "Creation Date",
+        accessorKey: "createdAt",
         cell: (info) => {
           const value = info.getValue();
           return (
             <p
-              title={value?.length ?? ""}
-              className="text-sm font-medium nuni truncate max-w-xs text-black"
+              title={value ?? ""}
+              className="text-sm font-medium nuni truncate max-w-sm text-black"
             >
-              {value?.length ?? "--"}
+              {value === null
+                ? "--"
+                : dayjs(value).format("DD/MM/YYYY , h:mm a")}
             </p>
           );
         },
       },
       {
-        header: "Last Updated",
+        header: "Updated at",
         accessorKey: "updatedAt",
         cell: (info) => {
           const value = info.getValue();
@@ -126,7 +100,7 @@ export default function Albums() {
         },
       },
       {
-        header: "",
+        header: "", 
         id: "actions",
         enableSorting: false,
         enableColumnFilter: false,
@@ -137,18 +111,13 @@ export default function Albums() {
                 <EllipsisVertical className="h-5 w-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
-              align="end"
-            >
+            <DropdownMenuContent className="w-40 shadow-lg border border-black bg-[#23252B] text-white" align="end">
+              
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <Eye /> View
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <CircleMinus /> Inactive
+                <CircleMinus /> Inactive 
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
-                <Trash2 color="red" /> Delete
+                <Trash2 color="red" /> Delete 
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -163,18 +132,18 @@ export default function Albums() {
   const columns = useMemo(() => COLUMNS, []);
   return (
     <div className=" rounded-lg flex flex-col">
-      <div className="flex justify-end w-full my-4">
+       <div className="flex justify-end w-full my-4">
         <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
           <Search color="white" />
           <input
             className="w-full focus:outline-none text-white"
             type="text"
-            placeholder="Album name"
+            placeholder="Genre name"
           />
         </div>
       </div>
       <div className="flex flex-row pb-1 gap-3 items-center rounded-lg ">
-        <p className="text-xl font-semibold nuni text-txtgray">Albums</p>
+        <p className="text-xl font-semibold nuni text-txtgray">Genre</p>
       </div>
       <DataTable columns={columns} data={data} loading={loading} />
     </div>

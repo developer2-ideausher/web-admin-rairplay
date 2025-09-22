@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
+import { CircleMinus, EllipsisVertical, Eye, Search, Trash2 } from "lucide-react";
 // import Pagination from "../Pagination";
 
 export default function SingleTracks() {
@@ -160,6 +160,16 @@ export default function SingleTracks() {
   const columns = useMemo(() => COLUMNS, []);
   return (
     <div className=" rounded-lg flex flex-col">
+       <div className="flex justify-end w-full my-4">
+        <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
+          <Search color="white" />
+          <input
+            className="w-full focus:outline-none text-white"
+            type="text"
+            placeholder="Single Track name"
+          />
+        </div>
+      </div>
       <div className="flex flex-row pb-1 gap-3 items-center rounded-lg ">
         <p className="text-xl font-semibold nuni text-txtgray">Single Tracks</p>
       </div>
