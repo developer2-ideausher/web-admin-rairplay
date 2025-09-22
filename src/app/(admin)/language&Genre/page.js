@@ -42,7 +42,7 @@ const page = () => {
           className={getButtonClasses("language")}
           onClick={() => setActive("language")}
         >
-          Language
+          Languages
         </button>
         <button
           className={getButtonClasses("genre")}
