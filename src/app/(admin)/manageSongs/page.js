@@ -3,11 +3,13 @@ import Albums from "@/Components/ManageSongsComponents/Albums";
 import Channels from "@/Components/ManageSongsComponents/Channels";
 import SingleTracks from "@/Components/ManageSongsComponents/SingleTracks";
 import Title from "@/Components/Title";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [active, setActive] = useState("tracks");
+  const router = useRouter();
 
   const getButtonClasses = (buttonType) => {
     const baseClasses =
@@ -22,7 +24,23 @@ const page = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Title title="Songs & Albums" />
+      <div className="flex flex-row justify-between items-center gap-4">
+        <Title title="Songs & Albums" />
+
+        {(active === "albums" || active === "channels") && (
+          <div
+            onClick={() => {
+              if (active === "channels") {
+                router.push("/channel");
+              }
+            }}
+            className=" bg-red-700 rounded-lg flex flex-row gap-2 items-center p-2 mt-2 cursor-pointer"
+          >
+            <Plus color="white" />
+            <p className="text-white text-base font-semibold ">Add New</p>
+          </div>
+        )}
+      </div>
       <div className="flex flex-row items-center w-full rounded-md justify-between bg-primary mt-2">
         <button
           className={getButtonClasses("tracks")}
@@ -53,12 +71,11 @@ const page = () => {
           />
         </div>
       </div> */}
-      {active==="tracks" && <SingleTracks />}
-      {active==="albums" && <Albums />}
-      {active==="channels" && <Channels />}
-
+      {active === "tracks" && <SingleTracks />}
+      {active === "albums" && <Albums />}
+      {active === "channels" && <Channels />}
     </div>
   );
 };
 
-export default page;
+export default Page;

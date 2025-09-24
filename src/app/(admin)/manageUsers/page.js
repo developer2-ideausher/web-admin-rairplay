@@ -6,7 +6,7 @@ import UsersTable from "@/Components/UsersComp/UsersTable";
 import { Search } from "lucide-react";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [active, setActive] = useState("users");
 
   const getButtonClasses = (buttonType) => {
@@ -53,4 +53,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

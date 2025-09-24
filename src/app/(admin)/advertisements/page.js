@@ -8,7 +8,7 @@ import Title from "@/Components/Title";
 import { Plus, Search } from "lucide-react";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [active, setActive] = useState("ad");
 
   const getButtonClasses = (buttonType) => {
@@ -64,4 +64,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

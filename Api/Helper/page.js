@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-export const url="http://52.14.192.210:5000"
+export const url = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const responseValidator = async (
   response,
   isToaster = false,

@@ -39,3 +39,25 @@ export const getAllChannels = async () => {
     return apiError(e);
   }
 };
+
+export const getAllSongs = async () => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + (await getTokenFromCookie()));
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+  try {
+    const response = await fetch(
+      url + `/api/songs?limit=10&page=1`,
+      requestOptions
+    );
+
+    return responseValidator(response);
+  } catch (e) {
+    return apiError(e);
+  }
+};

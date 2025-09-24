@@ -16,7 +16,7 @@ import { getAllLanguages } from "../../../Api/Lang&Genre/page";
 import { toast } from "react-toastify";
 // import Pagination from "../Pagination";
 
-export default function AllLanguages() {
+export default function AllLanguages({refreshSignal }) {
 const [data,setData] = useState([]);
 const [loading,setLoading] = useState(false);
 const fetchData = async () => {
@@ -33,9 +33,15 @@ const fetchData = async () => {
     setLoading(false);
   }
 };
-useEffect(() => {
-  fetchData();
-}, []);
+ useEffect(() => {
+    fetchData();
+  }, []);
+ useEffect(() => {
+    if (refreshSignal?.type === "language") {
+    fetchData()
+    }
+  }, [refreshSignal]);
+
 
   const COLUMNS = useMemo(
     () => [

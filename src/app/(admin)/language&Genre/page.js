@@ -9,9 +9,12 @@ import Title from "@/Components/Title";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [active, setActive] = useState("language");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [refreshSignal, setRefreshSignal] = useState({ type: null, tick: 0 });
+  const triggerRefresh = (type) =>
+    setRefreshSignal((s) => ({ type, tick: s.tick + 1 }));
 
   const getButtonClasses = (buttonType) => {
     const baseClasses =
@@ -52,22 +55,24 @@ const page = () => {
         </button>
       </div>
 
-      {active === "language" && <AllLanguages />}
-      {active === "genre" && <GenTable />}
+      {active === "language" && <AllLanguages  refreshSignal={refreshSignal} />}
+      {active === "genre" && <GenTable  refreshSignal={refreshSignal} />}
       {active === "language" && (
         <AddLang
           isDialogOpen={isDialogOpen}
           setIsDialogOpen={setIsDialogOpen}
+           refresh={() => triggerRefresh("language")}
         />
       )}
       {active === "genre" && (
         <AddGenre
           isDialogOpen={isDialogOpen}
           setIsDialogOpen={setIsDialogOpen}
+          refresh={() => triggerRefresh("genre")}
         />
       )}
     </div>
   );
 };
 
-export default page;
+export default Page;

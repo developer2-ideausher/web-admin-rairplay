@@ -11,31 +11,42 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { CircleMinus, EllipsisVertical, Eye, Search, Trash2 } from "lucide-react";
+import {
+  CircleMinus,
+  EllipsisVertical,
+  Eye,
+  Search,
+  Trash2,
+} from "lucide-react";
 import { getAllGenres, getAllLanguages } from "../../../Api/Lang&Genre/page";
 import { toast } from "react-toastify";
 // import Pagination from "../Pagination";
 
-export default function GenTable() {
-const [data,setData] = useState([]);
-const [loading,setLoading] = useState(false);
-const fetchData = async () => {
-  try {
-    setLoading(true);
-    const response = await getAllGenres();
-    if (response.data) {
-      setData(response.data);
+export default function GenTable({ refreshSignal }) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await getAllGenres();
+      if (response.data) {
+        setData(response.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.message || "Unable to fetch languages");
+    } finally {
       setLoading(false);
     }
-  } catch (error) {
-    toast.error(error.message || "Unable to fetch languages");
-  } finally {
-    setLoading(false);
-  }
-};
-useEffect(() => {
-  fetchData();
-}, []);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  useEffect(() => {
+    if (refreshSignal?.type === "genre") {
+      fetchData();
+    }
+  }, [refreshSignal]);
 
   const COLUMNS = useMemo(
     () => [
@@ -63,8 +74,7 @@ useEffect(() => {
           );
         },
       },
-     
-    
+
       {
         header: "Creation Date",
         accessorKey: "createdAt",
@@ -100,7 +110,7 @@ useEffect(() => {
         },
       },
       {
-        header: "", 
+        header: "",
         id: "actions",
         enableSorting: false,
         enableColumnFilter: false,
@@ -111,13 +121,15 @@ useEffect(() => {
                 <EllipsisVertical className="h-5 w-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 shadow-lg border border-black bg-[#23252B] text-white" align="end">
-              
+            <DropdownMenuContent
+              className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
+              align="end"
+            >
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <CircleMinus /> Inactive 
+                <CircleMinus /> Inactive
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
-                <Trash2 color="red" /> Delete 
+                <Trash2 color="red" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -132,7 +144,7 @@ useEffect(() => {
   const columns = useMemo(() => COLUMNS, []);
   return (
     <div className=" rounded-lg flex flex-col">
-       <div className="flex justify-end w-full my-4">
+      <div className="flex justify-end w-full my-4">
         <div className="w-2/11 bg-primary rounded-lg flex flex-row gap-2 p-2 mt-2">
           <Search color="white" />
           <input
