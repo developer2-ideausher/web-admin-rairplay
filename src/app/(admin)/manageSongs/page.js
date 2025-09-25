@@ -1,4 +1,5 @@
 "use client";
+import AddAlbum from "@/Components/ManageSongsComponents/AddAlbum";
 import Albums from "@/Components/ManageSongsComponents/Albums";
 import Channels from "@/Components/ManageSongsComponents/Channels";
 import SingleTracks from "@/Components/ManageSongsComponents/SingleTracks";
@@ -10,6 +11,7 @@ import React, { useState } from "react";
 const Page = () => {
   const [active, setActive] = useState("tracks");
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const getButtonClasses = (buttonType) => {
     const baseClasses =
@@ -27,11 +29,13 @@ const Page = () => {
       <div className="flex flex-row justify-between items-center gap-4">
         <Title title="Songs & Albums" />
 
-        {(active === "albums" || active === "channels") && (
+        {active === "channels" && (
           <div
             onClick={() => {
               if (active === "channels") {
                 router.push("/channel");
+              } else {
+                setIsDialogOpen(true);
               }
             }}
             className=" bg-red-700 rounded-lg flex flex-row gap-2 items-center p-2 mt-2 cursor-pointer"
@@ -74,6 +78,12 @@ const Page = () => {
       {active === "tracks" && <SingleTracks />}
       {active === "albums" && <Albums />}
       {active === "channels" && <Channels />}
+      {active === "albums" && setIsDialogOpen && (
+        <AddAlbum
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
+        />
+      )}
     </div>
   );
 };

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { getAllSongs } from "../../../Api/ManageSongs/page";
+import { useRouter } from "next/navigation";
 // import Pagination from "../Pagination";
 
 export default function SingleTracks() {
@@ -38,6 +39,7 @@ export default function SingleTracks() {
       setLoading(false);
     }
   };
+  const router = useRouter();
   useEffect(() => {
     fetchData();
   }, []);
@@ -180,7 +182,10 @@ export default function SingleTracks() {
               className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
               align="end"
             >
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
+              <DropdownMenuItem
+                onSelect={() => router.push(`/manageSongs/${row.original._id}`)}
+                className="flex items-center gap-2 text-sm font-semibold nuni"
+              >
                 <Eye /> View
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">

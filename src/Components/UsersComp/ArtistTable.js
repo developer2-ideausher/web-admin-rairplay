@@ -99,6 +99,21 @@ export default function ArtistTable() {
       {
         header: "Genre",
         accessorKey: "genre",
+        cell: (info) => {
+          const value = info.getValue();
+          const genreNames = Array.isArray(value)
+            ? value.map((item) => item.name)
+            : [];
+
+          return (
+            <p
+              title={genreNames.join(", ")}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {genreNames.length > 0 ? genreNames.join(", ") : "--"}
+            </p>
+          );
+        },
       },
       {
         header: "plan",

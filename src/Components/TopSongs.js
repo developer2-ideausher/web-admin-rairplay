@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 // import Modal from "../Modal";
 import dayjs from "dayjs";
@@ -12,67 +12,34 @@ import {
 } from "./ui/dropdown-menu";
 import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
 import DataTable from "./DataTable";
+import { getTrendingSongs } from "../../Api/ManageSongs/page";
 // import Pagination from "../Pagination";
 
 export default function TopSongs() {
-  const [data] = useState([
-    {
-      _id: "trk_001",
-      title: "Neon Skyline",
-      description: "Smooth synthwave with late-night vibes",
-      likes: 124,
-      listens: 5210,
-      createdAt: "2025-08-16T14:05:00.000Z",
-    },
-    {
-      _id: "trk_002",
-      title: "Coffee & Code",
-      description: "Lo-fi beats to debug to",
-      likes: 89,
-      listens: 3412,
-      createdAt: "2025-07-29T09:30:00.000Z",
-    },
-    {
-      _id: "trk_003",
-      title: "Desert Sun",
-      description: "Ambient guitars and warm pads",
-      likes: 203,
-      listens: 9820,
-      createdAt: "2025-06-03T18:45:00.000Z",
-    },
-    {
-      _id: "trk_004",
-      title: null,
-      description: "Untitled idea sketch",
-      likes: 2,
-      listens: 34,
-      createdAt: null,
-    },
-    {
-      _id: "trk_005",
-      title: "Midnight Runner",
-      description: null,
-      likes: 57,
-      listens: 1900,
-      createdAt: "2025-05-12T22:10:00.000Z",
-    },
-  ]);
-
-  const [loading] = useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await getTrendingSongs();
+      if (res?.data) {
+        setData(res.data?.results);
+      }
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const COLUMNS = useMemo(
     () => [
       {
-        header: "Users",
-        accessorKey: "_id",
-        cell: (info) => (
-          <span className="text-sm font-medium nuni text-black">
-            {info.getValue()}
-          </span>
-        ),
-      },
-      {
-        header: "Blocked",
-        accessorKey: "title",
+        header: "trackName",
+        accessorKey: "trackName",
         cell: (info) => {
           const value = info.getValue();
           return (
@@ -86,7 +53,7 @@ export default function TopSongs() {
         },
       },
       {
-        header: "Location",
+        header: "description",
         accessorKey: "description",
         cell: (info) => {
           const value = info.getValue();
@@ -101,24 +68,110 @@ export default function TopSongs() {
         },
       },
       {
+        header: "Artist",
+        accessorKey: "artist",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p
+              title={value?.username ?? ""}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {value?.username ?? "--"}
+            </p>
+          );
+        },
+      },
+      {
         header: "Genre",
-        accessorKey: "genre",
+        accessorKey: "genres",
+        cell: (info) => {
+          const value = info.getValue();
+          const genreNames = Array.isArray(value)
+            ? value.map((item) => item.name)
+            : [];
+
+          return (
+            <p
+              title={genreNames.join(", ")}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {genreNames.length > 0 ? genreNames.join(", ") : "--"}
+            </p>
+          );
+        },
       },
       {
-        header: "plan",
-        accessorKey: "likes",
+        header: "language",
+        accessorKey: "language",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p
+              title={value?.name ?? ""}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {value?.name ?? "--"}
+            </p>
+          );
+        },
       },
       {
-        header: "contact",
-        accessorKey: "contact",
+        header: "rating Count",
+        accessorKey: "ratingCount",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p className="text-sm font-medium nuni truncate max-w-xs text-black">
+              {value ?? "--"}
+            </p>
+          );
+        },
       },
       {
-        header: "following",
-        accessorKey: "following",
+        header: "listeners",
+        accessorKey: "listenersCount",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p className="text-sm font-medium nuni truncate max-w-xs text-black">
+              {value ?? "--"}
+            </p>
+          );
+        },
       },
-     
       {
-        header: "", 
+        header: " like",
+        accessorKey: "like",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p className="text-sm font-medium nuni truncate max-w-xs text-black">
+              {value ?? "--"}
+            </p>
+          );
+        },
+      },
+      {
+        header: "tags",
+        accessorKey: "tags",
+        cell: (info) => {
+          const value = info.getValue();
+          const tags = Array.isArray(value) ? value : [];
+
+          return (
+            <p
+              title={tags.join(", ")}
+              className="text-sm font-medium nuni truncate max-w-xs text-black"
+            >
+              {tags.length > 0 ? tags.join(", ") : "--"}
+            </p>
+          );
+        },
+      },
+
+      {
+        header: "",
         id: "actions",
         enableSorting: false,
         enableColumnFilter: false,
@@ -129,15 +182,18 @@ export default function TopSongs() {
                 <EllipsisVertical className="h-5 w-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 shadow-lg border border-black bg-[#23252B] text-white" align="end">
+            <DropdownMenuContent
+              className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
+              align="end"
+            >
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <Eye /> View 
+                <Eye /> View
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <CircleMinus /> Inactive 
+                <CircleMinus /> Inactive
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
-                <Trash2 color="red" /> Delete 
+                <Trash2 color="red" /> Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

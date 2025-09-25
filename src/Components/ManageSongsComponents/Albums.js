@@ -20,10 +20,12 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { getAllAblums } from "../../../Api/ManageSongs/page";
+import { useRouter } from "next/navigation";
 
 export default function Albums() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -141,7 +143,12 @@ export default function Albums() {
               className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
               align="end"
             >
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
+              <DropdownMenuItem
+                onSelect={() =>
+                  router.push(`/manageSongs/viewAlbum/${row.original._id}`)
+                }
+                className="flex items-center gap-2 text-sm font-semibold nuni"
+              >
                 <Eye /> View
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
