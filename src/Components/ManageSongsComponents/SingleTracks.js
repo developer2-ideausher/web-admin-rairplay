@@ -191,9 +191,9 @@ export default function SingleTracks() {
               <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
                 <CircleMinus /> Inactive
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
+              {/* <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
                 <Trash2 color="red" /> Delete
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         ),

@@ -14,7 +14,6 @@ const Page = () => {
     const checkExistingToken = async () => {
       const token = await getTokenFromCookie();
       if (token) {
-        // User is already logged in, redirect to dashboard
         router.push("/dashBoard");
       }
     };
@@ -30,7 +29,6 @@ const Page = () => {
         setToken(response.data.token, 24);
         toast.success("Login successful!");
 
-        // Redirect to dashboard
         router.push("/dashBoard");
       }
     } catch (error) {
@@ -39,45 +37,47 @@ const Page = () => {
     setLoading(false);
   };
   return (
-    // <button
-    //   onClick={() => router.push("/dashBoard")}
-    //   className="flex justify-center items-center w-full h-screen bg-black text-white"
-    // >
-    //   Go to dashboard
-    // </button>
-    <form
-      onSubmit={handleSubmit}
-      className="flex justify-center items-center  h-screen flex-col gap-3 text-white bg-black w-full"
-    >
-      <div className="flex flex-col gap-2 items-start w-1/3">
-        <label htmlFor="email">Email</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          className="border focus:outline-none py-2 px-3 rounded-lg w-full"
-        />
-      </div>
-      <div className="flex flex-col gap-2 items-start w-1/3">
-        <label htmlFor="pw">Password</label>
-        <input
-          value={pw}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          id="pw"
-          placeholder="Enter your password"
-          className="border focus:outline-none py-2 px-3 rounded-lg w-full"
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-red-500 rounded-lg p-4 text-center text-white w-1/3"
+    <div className="flex flex-col gap-8 justify-center items-center bg-black h-screen">
+      <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-white to-red-500 font-bold text-4xl">
+        Rairplay Admin
+      </h1>
+      {/* <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-white via-red-300 to-red-600 font-bold text-4xl">
+        Rairplay Admin
+      </h1> */}
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center items-center  flex-col gap-3 text-white  w-full"
       >
-        {loading ? "Logging in..." : "Login"}
-      </button>
-    </form>
+        <div className="flex flex-col gap-2 items-start w-1/3">
+          <label htmlFor="email">Email</label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            className="border focus:outline-none py-2 px-3 rounded-lg w-full"
+          />
+        </div>
+        <div className="flex flex-col gap-2 items-start w-1/3">
+          <label htmlFor="pw">Password</label>
+          <input
+            value={pw}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            id="pw"
+            placeholder="Enter your password"
+            className="border focus:outline-none py-2 px-3 rounded-lg w-full"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-red-500 mt-4 font-semibold text-xl cursor-pointer rounded-lg p-4 text-center text-white w-1/3"
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+    </div>
   );
 };
 

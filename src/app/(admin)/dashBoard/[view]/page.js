@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 
 const Page = () => {
   const params = useParams();
-  const id = params.viewSong;
+  const id = params.view;
   const router = useRouter();
   const [play, setPlay] = useState(false);
   const [loading, setLoading] = useState(false);

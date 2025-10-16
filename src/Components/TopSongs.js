@@ -10,14 +10,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { CircleMinus, EllipsisVertical, Eye, Trash2 } from "lucide-react";
+import {
+  CircleMinus,
+  CirclePlus,
+  EllipsisVertical,
+  Eye,
+  Trash2,
+} from "lucide-react";
 import DataTable from "./DataTable";
 import { getTrendingSongs } from "../../Api/ManageSongs/page";
+import ToggleSongStatus from "./ToggleSongStatus";
+import { set } from "react-hook-form";
+import { useRouter } from "next/navigation";
 // import Pagination from "../Pagination";
 
 export default function TopSongs() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [id, setId] = useState(null);
+  const router = useRouter();
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -117,6 +129,25 @@ export default function TopSongs() {
         },
       },
       {
+        header: "Status",
+        accessorKey: "enable",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <p
+              className={`text-sm ${
+                value
+                  ? "border-green-500 text-green-500"
+                  : "border-red-500 text-red-500"
+              } font-medium border nuni rounded-full p-2 `}
+            >
+              {value ? "Active" : "Inactive"}
+            </p>
+          );
+        },
+      },
+
+      {
         header: "rating Count",
         accessorKey: "ratingCount",
         cell: (info) => {
@@ -186,15 +217,33 @@ export default function TopSongs() {
               className="w-40 shadow-lg border border-black bg-[#23252B] text-white"
               align="end"
             >
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
+              <DropdownMenuItem
+                onSelect={() =>
+                  router.push(`/dashBoard/${row.original._id}`)
+                }
+                className="flex items-center gap-2 text-sm font-semibold nuni"
+              >
                 <Eye /> View
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni">
-                <CircleMinus /> Inactive
+              <DropdownMenuItem
+                onSelect={() => {
+                  setIsOpen(true);
+                  setId(row.original._id);
+                }}
+                className={`flex items-center ${
+                  row.original.enable ? "text-red-500" : "text-green-500"
+                } gap-2 text-sm font-semibold nuni`}
+              >
+                {row.original.enable ? (
+                  <CircleMinus color="red" />
+                ) : (
+                  <CirclePlus color="green" />
+                )}{" "}
+                {row.original.enable ? "Disable" : "Enable"}
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
+              {/* <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
                 <Trash2 color="red" /> Delete
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         ),
@@ -202,8 +251,6 @@ export default function TopSongs() {
     ],
     []
   );
-  const [isOpen, setIsOpen] = useState(false);
-  const [extendOpen, setExtendOpen] = useState(false);
 
   const columns = useMemo(() => COLUMNS, []);
   return (
@@ -212,6 +259,14 @@ export default function TopSongs() {
         <p className="text-xl font-semibold nuni text-txtgray">Top Songs</p>
       </div>
       <DataTable columns={columns} data={data} loading={loading} />
+      {isOpen && (
+        <ToggleSongStatus
+          isDialogOpen={isOpen}
+          setIsDialogOpen={setIsOpen}
+          refresh={fetchData}
+          id={id}
+        />
+      )}
     </div>
   );
 }

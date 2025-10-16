@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { removeToken } from "../../Auth/userCookies";
 
 const navItems = [
   { label: "Home", icon: House, path: "/dashBoard" },
@@ -21,7 +22,7 @@ const navItems = [
   { label: "Manage Users", icon: Users, path: "/manageUsers" },
   { label: "Notifications", icon: BellRing, path: "/notifications" },
   { label: "Advertisements", icon: Megaphone, path: "/advertisements" },
-  { label: "Logout", icon: LogOut, path: "/logout" },
+  // { label: "Logout", icon: LogOut, path: "/logout" },
 ];
 
 const Sidebar = () => {
@@ -45,9 +46,10 @@ const Sidebar = () => {
       {/* Nav Items */}
       <div className="flex flex-col gap-5 items-start pl-4">
         {navItems.map(({ label, icon: Icon, path }) => {
-          const isActive =
-            pathname === path ||
-            (label === "Home" && pathname === "/dashBoard");
+          // const isActive =
+          //   pathname === path ||
+          //   (label === "Home" && pathname === "/dashBoard");
+          const isActive = pathname.startsWith(path);
 
           return (
             <div
@@ -76,6 +78,28 @@ const Sidebar = () => {
             </div>
           );
         })}
+        <div
+          onClick={() => {
+            router.push("/");
+            removeToken();
+          }}
+          className="flex flex-row gap-3 items-center group cursor-pointer transform transition-all duration-300 ease-in-out 
+                    hover:scale-105 hover:shadow-2xl hover:bg-primary/90 "
+        >
+          <LogOut
+            className={`  text-txtgray group-hover:text-white
+            }`}
+            size={20}
+          />
+          <p
+            className={`text-base font-semibold 
+                  
+                     text-txtgray group-hover:text-white
+                `}
+          >
+            Logout
+          </p>
+        </div>
       </div>
     </div>
   );

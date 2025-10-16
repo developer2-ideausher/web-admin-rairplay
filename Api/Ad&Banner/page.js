@@ -1,24 +1,19 @@
 import { getTokenFromCookie } from "../../Auth/userCookies";
 import { apiError, responseValidator, url } from "../Helper/page";
 
-export const loginAdmin = async (email, p) => {
+export const getAllAdBanner = async () => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-
-  const raw = JSON.stringify({
-    email: email,
-    password: p,
-  });
+  myHeaders.append("Authorization", "Bearer " + (await getTokenFromCookie()));
 
   const requestOptions = {
-    method: "POST",
+    method: "GET",
     headers: myHeaders,
-    body: raw,
     redirect: "follow",
   };
 
   try {
-    const response = await fetch(url + `/api/auth/login`, requestOptions);
+    const response = await fetch(url + `/api/banners/all`, requestOptions);
 
     return responseValidator(response);
   } catch (e) {
@@ -26,9 +21,9 @@ export const loginAdmin = async (email, p) => {
   }
 };
 
-export const toggleSongStatus = async (id) => {
+export const toggleBannerStatus = async (id) => {
   const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "text/plain");
+  myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer " + (await getTokenFromCookie()));
 
   const requestOptions = {
@@ -39,7 +34,7 @@ export const toggleSongStatus = async (id) => {
 
   try {
     const response = await fetch(
-      url + `/api/songs/toggle/${id}`,
+      url + `/api/banners/683865ab5ac566b7a69bbc0d/toggle`,
       requestOptions
     );
 
