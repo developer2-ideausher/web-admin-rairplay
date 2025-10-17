@@ -244,7 +244,7 @@ export default function TopSongs() {
               {/* <DropdownMenuItem className="flex items-center gap-2 text-sm font-semibold nuni text-red-500">
                 <Trash2 color="red" /> Delete
               </DropdownMenuItem> */}
-            </DropdownMenuContent>
+            </DropdownMenuContent> 
           </DropdownMenu>
         ),
       },
